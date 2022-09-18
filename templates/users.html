@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Пользователи</h1>
+{% if current_user.is_authenticated %}
+      {% if current_user.level > 1 %}
+        <a role="button" class="btn btn-secondary" href="/register">Добавить пользователя</a>
+       <table class="table table-striped" border=1>
+        <thead class="thead-dark">
+        <tr>
+             <th>Имя пользователя</th>
+             <th>Логин</th>  
+             <th>Роль</th>
+             <th>Класс</th>
+             <th></th>
+             <th></th>
+        </tr>
+        </thead>
+        {% for user in users%}
+          
+          <tr>
+             <td>{{user.name}}</td>
+             <td>{{user.login}}</td>  
+             <td>
+             {% if user.level == 0 %}
+                     Ученик
+             {% endif %}
+             {% if user.level == 1 %}
+                     Кл. руководитель
+             {% endif %}  
+             {% if user.level == 2 %}
+                     Администратор
+              {% endif %}       
+             </td>
+             <td>{{user.group.name}}</td>
+             <td><a href="/edit_user/{{ user.id }}" class="btn btn-outline-success" role="button">Изменить</a></td>
+             <td><a href="/user_delete/{{ user.id }}" class="btn btn-outline-danger" role="button">Удалить</a></td>
+           </tr>          
+         
+        {% endfor %}
+         </table>
+    {% endif %}  
+{% endif %}
+
+
+{% endblock %}

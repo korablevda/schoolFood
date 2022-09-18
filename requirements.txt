@@ -1,0 +1,6 @@
+Flask
+requests
+apscheduler
+sqlalchemy
+WTForms
+qrcode

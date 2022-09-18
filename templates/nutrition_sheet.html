@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+table th{
+  background-color:#ff6600;
+
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -ms-sticky;
+  position: -o-sticky;
+  position: sticky;
+  top: 0px;
+}
+</style>
+<h1>Табель учета питания детей из малообеспеченных семей <br>
+    КОГОАУ «Кировский экономико-правовой лицей»
+</h1>
+<form action="" method="post" novalidate>
+{{ form.hidden_tag() }}
+{{ form.csrf_token }}
+{% if current_user.is_authenticated %}
+      {% if current_user.level > 0 %}
+        <p>
+        {{ form.date.label }}<br>
+        {{ form.date(class="datetime") }}<br>
+        {% for error in form.date.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+        </p>
+
+
+<p>{{ form.submit_edit(type="submit", class="btn btn-primary") }}
+ <a href="/admin" class="btn btn-info" role="button">Панель управления</a>
+</p>
+    <table class="table table-striped sticky-header table-sm" border=1>
+        <thead class="thead-dark">
+        <tr>
+             <th rowspan="2">№</th>
+             <th rowspan="2">Фамилия, Имя, Отчество</th>
+             <th colspan={{len(date_list)}} class="text-center">{{header_date}}</th>
+             <th rowspan="2">Всего</th>
+        </tr>
+        <tr>
+            {% for date in date_list%}
+            <th>{{date}} </th>
+            {% endfor %}
+        </tr>
+        </thead>
+{% for user in sort_name%}
+
+          <tr>
+              <td>{{loop.index}}</td>
+             <td>{{users_dict[user]['name']}}</td>
+              {% for day in date_list%}
+                  <td>{{users_dict[user]['dates'][day]}}</td>
+              {% endfor %}
+             <td>{{users_dict[user]['all']}}</td>
+           </tr>
+
+        {% endfor %}
+         </table>
+
+
+
+    {{message}}
+
+{% endif %}
+{% endif %}
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $(".sticky-header").floatThead({top:50});
+});
+ </script>
+    </form>
+{% endblock %}

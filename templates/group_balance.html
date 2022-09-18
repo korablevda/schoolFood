@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if current_user.is_authenticated %}
+      {% if current_user.level > 0 %}
+    <h1>Список учеников класса</h1>
+
+<table class="table table-striped" border=1>
+        <thead class="thead-dark">
+        <tr>
+             <th>№</th>
+             <th>ФИО</th>
+             <th>Баланс карты</th>
+        </tr>
+        </thead>
+{% for name in names%}
+ <tr>
+     <td> {{loop.index}}</td>
+     <td>{{name}}</td>
+     <td>{{users[name]}} </td>
+  </tr>
+{% endfor %}
+</table>
+
+{% endif %}
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+{% if current_user.is_authenticated %}
+      {% if current_user.level > 0 %}
+<h2 align="center"> Новая заявка</h2>
+<br>
+<h4>Организованное питание</h4>
+<br>
+<div class="row">
+    <div class="col-sm-5">
+        <h6>Список класса</h6>
+        <select name="users_from" id="select1" class="form-control" size={{size}} multiple="multiple">
+        {% for user in users %}
+            <option value={{user[0]}}>{{user[1]}}</option>
+            {% endfor %}</select>
+        <button type="button" class="btn btn-primary btn-lg btn-block" id="add1">&#x21D2;</button>
+    </div>
+
+
+    <div class="col-sm-5">
+        <h6>Будут питаться</h6>
+        <select name="users_to" id="select2" class="form-control" size={{size}} multiple="multiple">
+        {% for user in users_selected %}
+            <option value={{user[0]}}>{{user[1]}}</option>
+            {% endfor %}</select>
+<button type="button" class="btn btn-primary btn-lg btn-block" id="del1">&#x21D0;</button>
+    </div>
+</div>
+<br>
+<h4>Льготное питание</h4>
+<br>
+<div class="row">
+    <div class="col-sm-5">
+        <h6>Список класса</h6>
+        <select name="users_from_p" id="select3" class="form-control" size={{size_p}} multiple="multiple">
+        {% for user in user_privilege %}
+            <option value={{user[0]}}>{{user[1]}}</option>
+            {% endfor %}</select>
+        <button type="button" class="btn btn-primary btn-lg btn-block" id="add2">&#x21D2;</button>
+    </div>
+
+
+    <div class="col-sm-5">
+        <h6>Будут питаться</h6>
+         <select name="users_to_p" id="select4" class="form-control" size={{size_p}} multiple="multiple">
+        {% for user in user_privilege_selected %}
+            <option value={{user[0]}}>{{user[1]}}</option>
+             {% endfor %}</select>
+        <button type="button" class="btn btn-primary btn-lg btn-block" id="del2">&#x21D0;</button>
+    </div>
+</div>
+<div>
+    <br>
+<p>{{ form.submit_edit(type="submit", class="btn btn-primary", id="select_all") }}</p>
+    {{message}}
+</div>
+{% endif %}
+{% endif %}
+
+<script type="text/javascript">
+  $().ready(function() {
+   $('#select1').dblclick(function() {
+    return !$('#select1 option:selected').remove().appendTo('#select2');
+   });
+   $('#select2').dblclick(function() {
+    return !$('#select2 option:selected').remove().appendTo('#select1');
+   });
+   $('#add1').click(function() {
+    return !$('#select1 option:selected').remove().appendTo('#select2');
+   });
+   $('#del1').click(function() {
+    return !$('#select2 option:selected').remove().appendTo('#select1');
+   });
+   $('#select3').dblclick(function() {
+    return !$('#select3 option:selected').remove().appendTo('#select4');
+   });
+   $('#select4').dblclick(function() {
+    return !$('#select4 option:selected').remove().appendTo('#select3');
+   });
+   $('#add2').click(function() {
+    return !$('#select3 option:selected').remove().appendTo('#select4');
+   });
+   $('#del2').click(function() {
+    return !$('#select4 option:selected').remove().appendTo('#select3');
+   });
+   $('#select_all').click(function() {
+    $('#select2 option').prop('selected', true);
+    $('#select4 option').prop('selected', true);
+});
+  });
+ </script>
+    </form>
+{% endblock %}

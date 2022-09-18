@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 align="center">Система организованного питания КОГОАУ "КЭПЛ"</h1>
+{% if current_user.will_eat %}
+<h4><font color="green"> Вы участвуете в организованном питании</font></h4>
+{% else%}
+<h4><font color="red"> Вы не участвуете в организованном питании</font></h4>
+{% endif %}
+{% if current_user.is_authenticated %}
+    <div>
+        {% if current_user.level == 2 %}
+        <a href="/admin" class="btn btn-info" role="button">Панель управления</a>
+        {% endif %}
+        <a href="/lk" class="btn btn-info" role="button">Личный кабинет</a>
+        <a href="/will_eat/{{current_user.id}}" class="btn btn-warning" role="button">Буду питаться</a>
+        <a href="/not_will_eat/{{current_user.id}}" class="btn btn-warning" role="button">Не буду питаться</a>
+    </div>
+        {% if current_user.level >= 1 %}
+<br>
+        <div><a href="/register_sheet" class="btn btn-danger" role="button">Сформировать заявку от класса</a>
+        <a href="/debtors" class="btn btn-danger" role="button">Посмотреть список должников</a>
+            <a href="/group_balance" class="btn btn-danger" role="button">Посмотреть общий список</a>
+        </div>
+        {% endif %}
+<br>
+<h1>Меню</h1>
+<br>
+<table class="table table-striped" border=1>
+        <thead class="thead-dark">
+        <tr>
+             <th>Наименование</th>
+             <th>Дата</th>
+             <th></th>
+        </tr>
+        </thead>
+        {% for menu in menus%}
+
+          <tr>
+             <td>{{menu.name}}</td>
+             <td>{{menu.date}}</td>
+             <td><a href="/menu/{{ menu.id }}" class="btn btn-outline-success" role="button">Посмотреть</a></td>
+           </tr>
+
+        {% endfor %}
+         </table>
+{% endif %}
+{{ message }}
+
+{% endblock %}

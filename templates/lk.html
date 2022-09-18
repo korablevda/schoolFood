@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 align="center">Личный кабинет</h1>
+<br>
+<td><a href="/change_pass/{{ current_user.id }}" class="btn btn-outline-danger" role="button">Изменить пароль</a></td>
+<br>
+<h4>Баланс карты ({{current_user.card_number}}): {{balance}} руб.</h4>
+<br>
+<div>
+<h4>QR-код для пополнения лицевого счета через "Сбербанк-Онлайн":</h4>
+    <h4><font color="red">Внимание! Деньги поступят на следующий рабочий день! <br>
+        Для более быстрого пополнения воспользуйтесь терминалом в здании лицея.</font></h4>
+    <img src="{{qr}}" width="200">
+</div>
+<br>
+<h3>Операции по лицевому счету:</h3>
+<br>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+<div class="row">
+    <div class="col-sm-4">
+        {{ form.date_begin.label }}
+        {{ form.date_begin(class="datetime") }}<br>
+        {% for error in form.date_begin.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </div>
+    <div class="col-sm-4">
+        {{ form.date_end.label }}
+        {{ form.date_end(class="datetime") }}<br>
+        {% for error in form.date_end.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </div>
+<div class="col-sm-4">
+        {{ form.submit(type="submit", class="btn btn-primary btn-sm") }}
+</div>
+
+</div>
+</form>
+<br>
+<table class="table table-hover" border=1>
+<thead class="thead-dark">
+        <tr>
+             <th>Дата</th>
+             <th>Документ</th>
+             <th>Блюдо</th>
+             <th>Количество</th>
+             <th>Цена</th>
+             <th>Сумма</th>
+
+        </tr>
+        </thead>
+{% for rec in rec_list%}
+{% if rec['len'] > 0 %}
+ <tr  border=1>
+    <td rowspan={{rec['len']}}> {{rec['period']}}</td>
+    <td rowspan={{rec['len']}}> {{rec['dok']}}</td>
+    {% for dish in rec['dishes']%}
+        {% if loop.first%}
+            <td border=1>{{ dish[0] }}</td>
+            <td border=1>{{ dish[1] }}</td>
+            <td border=1>{{ dish[2] }}</td>
+            <td rowspan={{rec['len']}}> <font color={{rec['color']}}>{{rec['sum']}}</font></td>
+        {% else%}
+        <tr border=1>
+            <td border=1>{{ dish[0] }}</td>
+            <td border=1>{{ dish[1] }}</td>
+            <td border=1>{{ dish[2] }}</td>
+        </tr>
+    {% endif %}
+    {% endfor %}
+    {% else%}
+     <tr  border=1>
+         <td> {{rec['period']}}</td>
+         <td> {{rec['dok']}}</td>
+         <td colspan="3"></td>
+         <td> <font color={{rec['color']}}>{{rec['sum']}}</font></td>
+    {% endif %}
+</tr>
+
+
+{% endfor %}
+</table>
+{{ message }}
+
+{% endblock %}

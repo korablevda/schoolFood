@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Панель управления</h1>
+<br>
+{% if current_user.is_authenticated and (current_user.level == 2) %}
+    <div>
+        <h4>Обновление данных</h4>
+        <a href="/update_users" class="btn btn-outline-warning" role="button">Обновить пользователей</a>
+        <a href="/update_dishes" class="btn btn-outline-warning" role="button">Обновить блюда</a>
+        <a href="/update_menus" class="btn btn-outline-warning" role="button">Обновить меню</a>
+    </div>
+ <div>
+        <h4>Просмотр данных</h4>
+        <a href="/users" class="btn btn-outline-info" role="button">Пользователи</a>
+        <a href="/dishes" class="btn btn-outline-info" role="button">Блюда</a>
+        <a href="/menus" class="btn btn-outline-info" role="button">Меню</a>
+     <a href="/groups" class="btn btn-outline-info" role="button">Группы</a>
+    </div>
+<div>
+        <h4>Приказы "льготников"</h4>
+        <a href="/orders" class="btn btn-outline-info" role="button">Приказы</a>
+        <a href="/users_in_orders" class="btn btn-outline-info" role="button">Список льготников</a>
+        <a href="/nutrition_sheet" class="btn btn-outline-info" role="button">Табель питания</a>
+    </div>
+<div>
+        <h4>Заявки на питание</h4>
+        <a href="/sheets" class="btn btn-outline-info" role="button">Заявки</a>
+    </div>
+{% endif %}
+{{ message }}
+
+{% endblock %}

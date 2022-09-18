@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Список льготников</h1>
+{% if current_user.is_authenticated %}
+      {% if current_user.level > 1 %}
+       <table class="table table-striped" border=1>
+        <thead class="thead-dark">
+        <tr>
+             <th>Класс</th>
+             <th>Учащиеся</th>
+        </tr>
+        </thead>
+        {% for group in keys%}
+          
+          <tr>
+             <td>{{group}}</td>
+             <td>
+                 {% for user in users[group]%}
+                 {{user}}<br>
+                 {% endfor %}
+             </td>
+
+           </tr>          
+         
+        {% endfor %}
+         </table>
+    {% endif %}  
+{% endif %}
+
+
+{% endblock %}

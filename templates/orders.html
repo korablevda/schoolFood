@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Приказы "льготников"</h1>
+{% if current_user.is_authenticated %}
+      {% if current_user.level > 1 %}
+        <a role="button" class="btn btn-secondary" href="/register_order">Добавить приказ</a>
+       <table class="table table-striped" border=1>
+        <thead class="thead-dark">
+        <tr>
+             <th>№</th>
+             <th>Дата начала</th>
+             <th>Дата окончания</th>
+             <th>Ученик</th>
+             <th></th>
+             <th></th>
+        </tr>
+        </thead>
+        {% for order in orders%}
+          
+          <tr>
+              <td>{{loop.index}}</td>
+             <td>{{order.date_begin}}</td>
+             <td>{{order.date_end}}</td>
+             <td>{{order.user.name}}</td>
+
+             <td><a href="/edit_order/{{ order.id }}" class="btn btn-outline-success" role="button">Изменить</a></td>
+             <td><a href="/order_delete/{{ order.id }}" class="btn btn-outline-danger" role="button">Удалить</a></td>
+           </tr>          
+         
+        {% endfor %}
+         </table>
+    {% endif %}  
+{% endif %}
+
+
+{% endblock %}

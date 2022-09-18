@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Новый приказ</h1>
+<form action="" method="post" novalidate>
+{{ form.hidden_tag() }}
+{{ form.csrf_token }}
+{% if current_user.is_authenticated %}
+      {% if current_user.level > 0 %}
+        <p>
+        {{ form.date_begin.label }}<br>
+        {{ form.date_begin(class="datetime") }}<br>
+        {% for error in form.date_begin.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+        </p>
+   <p>
+        {{ form.date_end.label }}<br>
+        {{ form.date_end(class="datetime") }}<br>
+        {% for error in form.date_end.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+        </p>
+    <p>
+        <div class="mycontainer" >
+        {{ form.user.label }}<br>
+        {{ form.user(class="custom-select", list='id_datalist') }}
+        <datalist id="id_datalist">
+        {% for entry in users %}
+           <option>{{entry}}</option>
+        {% endfor %}
+        </datalist>
+
+        {% for error in form.user.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+</div>
+<p>{{ form.submit_edit(type="submit", class="btn btn-primary") }}</p>
+    {{message}}
+{% endif %}
+{% endif %}
+</form>
+{% endblock %}
